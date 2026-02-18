@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "3b176bb9-c475-4bf4-8d8a-f323199abf0c",
-    "name": "MONEY-TRANSFER-API Copy 2",
+    "name": "MONEY-TRANSFER-API Final",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "51657504",
     "_collection_link": "https://go.postman.co/collection/51657504-3b176bb9-c475-4bf4-8d8a-f323199abf0c?source=collection_link"
@@ -107,6 +107,36 @@
           "listen": "prerequest",
           "script": {
             "exec": [
+              "pm.environment.unset(\"admin_token\");\r",
+              "pm.environment.unset(\"customer_name\");\r",
+              "pm.environment.unset(\"customer_email\");\r",
+              "pm.environment.unset(\"customer_phone\");\r",
+              "pm.environment.unset(\"customer_nid\");\r",
+              "pm.environment.unset(\"customer_password\");\r",
+              "pm.environment.unset(\"customer_id\");\r",
+              "pm.environment.unset(\"agent_name\");\r",
+              "pm.environment.unset(\"agent_email\");\r",
+              "pm.environment.unset(\"agent_phone\");\r",
+              "pm.environment.unset(\"agent_nid\");\r",
+              "pm.environment.unset(\"agent_password\");\r",
+              "pm.environment.unset(\"agent_id\");\r",
+              "pm.environment.unset(\"merchant_name\");\r",
+              "pm.environment.unset(\"merchant_email\");\r",
+              "pm.environment.unset(\"merchant_password\");\r",
+              "pm.environment.unset(\"merchant_id\");\r",
+              "pm.environment.unset(\"merchant_phone\");\r",
+              "pm.environment.unset(\"merchant_nid\");\r",
+              "pm.environment.unset(\"agent_balance\");\r",
+              "pm.environment.unset(\"agent_token\");\r",
+              "pm.environment.unset(\"customer_balance\");\r",
+              "pm.environment.unset(\"customer_token\");\r",
+              "pm.environment.unset(\"last_trnxId\");\r",
+              "pm.environment.unset(\"withdraw_fee\");\r",
+              "\r",
+              "\r",
+              "\r",
+              "\r",
+              "\r",
               ""
             ],
             "type": "text/javascript",
@@ -147,44 +177,6 @@
       "response": []
     },
     {
-      "name": "user-create",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{admin_token}}",
-            "type": "text"
-          },
-          {
-            "key": "AUTH-SECRET-KEY",
-            "value": "{{AUTH_SECRET_KEY}}",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Mahmuda Ferdus\",\n  \"email\": \"mahmuda12345@gmail.com\",\n  \"password\": \"123456\",\n  \"phone_number\": \"01888888887\",\n  \"nid\": \"123456789\",\n  \"role\": \"Admin\"\n}\n",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{base_url}}/user/create",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "user",
-            "create"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
       "name": "create customer",
       "event": [
         {
@@ -210,10 +202,6 @@
               "pm.test(\"Email matches\", () => {\r",
               "    pm.expect(user.email).to.eql(pm.environment.get(\"customer_email\"));\r",
               "});\r",
-              "pm.test(\"Email is a string\", function () {\r",
-              "    var jsonData = pm.response.json();\r",
-              "    pm.expect(typeof jsonData.user.email).to.eql(\"string\");\r",
-              "});\r",
               "\r",
               "pm.test(\"Phone matches\", () => {\r",
               "    pm.expect(user.phone_number).to.eql(pm.environment.get(\"customer_phone\"));\r",
@@ -225,7 +213,7 @@
               "\r",
               "pm.environment.set(\"customer_id\", user.id);\r",
               "\r",
-              "pm.execution.setNextRequest(\"customer-login\");\r",
+              "pm.execution.setNextRequest(\"create agent\");\r",
               "\r",
               "\r",
               "\r",
@@ -329,7 +317,7 @@
               "        ",
               "        pm.environment.set(\"customer_token\", token);",
               "        ",
-              "        pm.execution.setNextRequest(\"admin-create-virtual-money\");",
+              "        pm.execution.setNextRequest(\"withdraw-customer-to-agent\");",
               "        break;",
               "    ",
               "    case 401:",
@@ -525,7 +513,7 @@
               "        ",
               "        pm.environment.set(\"agent_token\", token);",
               "        ",
-              "        pm.execution.setNextRequest(\"Deposit to Customer\");",
+              "        pm.execution.setNextRequest(\"Deposit AGENT to Customer\");",
               "        break;",
               "    ",
               "    case 401:",
@@ -1088,7 +1076,7 @@
           }
         ],
         "url": {
-          "raw": "{{base_url}}/user/search?email=system@dmoney.com",
+          "raw": "{{base_url}}/user/search?email=agent1@dmoney.com",
           "host": [
             "{{base_url}}"
           ],
@@ -1099,7 +1087,7 @@
           "query": [
             {
               "key": "email",
-              "value": "system@dmoney.com"
+              "value": "agent1@dmoney.com"
             }
           ]
         }
@@ -1247,6 +1235,7 @@
               "            pm.expect(res.amountAdded).to.be.a(\"number\");\r",
               "            pm.expect(res.amountAdded).to.be.above(0);\r",
               "        });\r",
+              "        pm.execution.setNextRequest(\"system-virtual-balance\");\r",
               "        break;\r",
               "\r",
               "    case 400:\r",
@@ -1354,7 +1343,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer {{customer_token}}",
+            "value": "Bearer {{admin_token}}",
             "type": "text"
           },
           {
@@ -1393,6 +1382,40 @@
     },
     {
       "name": "system-virtual-balance",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var res = pm.response.json();\r",
+              "pm.test(\"Status code is 200\",()=>{\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"Response time is within 10 to 1000ms\",()=>{\r",
+              "    pm.expect(pm.response.responseTime).to.be.within(10,1000);\r",
+              "});\r",
+              "pm.test(\"Response have message property\",()=>{\r",
+              "    pm.expect(res).to.have.property(\"message\");\r",
+              "})\r",
+              "pm.test(\"Response have balance property\",()=>{\r",
+              "   pm.expect(res).to.have.property(\"balance\");\r",
+              "})\r",
+              "pm.test(\"System balance retrieved successfully message is showing\",()=>{\r",
+              "    pm.expect(res.message).to.eql(\"System balance retrieved successfully\");\r",
+              "});\r",
+              "pm.test(\"Balance is a string\",()=>{\r",
+              "    pm.expect(typeof res.balance).to.be.a(\"String\");\r",
+              "});\r",
+              "console.log(typeof res.balance);\r",
+              "console.log(res.balance);\r",
+              "pm.execution.setNextRequest(\"commission-create\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [
@@ -1465,8 +1488,9 @@
               "    pm.expect(jsonData.commission_id).to.eql(jsonData.commission.id);\r",
               "});\r",
               "pm.expect(jsonData).to.have.property(\"commission\");\r",
-              "pm.expect(jsonData.commission).to.be.an.(\"object\");\r",
-              ""
+              "pm.expect(jsonData.commission).to.be.an(\"object\");\r",
+              "\r",
+              "pm.execution.setNextRequest(\"commission-listing\");"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -1517,6 +1541,94 @@
     },
     {
       "name": "commission-listing",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"Response time is less than 2000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "var response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Message is 'Commission list'\", function () {\r",
+              "    pm.expect(response.message).to.eql(\"Commission list\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Count is a positive number\", function () {\r",
+              "    pm.expect(response.count).to.be.a(\"number\");\r",
+              "    pm.expect(response.count).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains all required top-level fields\", function () {\r",
+              "    pm.expect(response).to.have.property(\"message\");\r",
+              "    pm.expect(response).to.have.property(\"count\");\r",
+              "    pm.expect(response).to.have.property(\"commissions\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Commissions is an array\", function () {\r",
+              "    pm.expect(response.commissions).to.be.an(\"array\");\r",
+              "});\r",
+              "pm.test(\"Commissions array is not empty\", function () {\r",
+              "    pm.expect(response.commissions.length).to.be.above(0);\r",
+              "});\r",
+              "pm.test(\"Count is equal to commissions array length\", function () {\r",
+              "    pm.expect(response.count).to.at.least(response.commissions.length);\r",
+              "});\r",
+              "var jsonData=pm.response.json();\r",
+              "\r",
+              "pm.test(\"Each user has 'id' field\", function () {\r",
+              "    jsonData.commissions.forEach((user, index) => {\r",
+              "        pm.expect(user, `User[${index}] missing 'id'`).to.have.property('id');\r",
+              "    });\r",
+              "});\r",
+              "pm.test(\"Each user has 'from_role' field\", function () {\r",
+              "    jsonData.commissions.forEach((user, index) => {\r",
+              "        pm.expect(user, `User[${index}] missing 'from_role'`).to.have.property('from_role');\r",
+              "    });\r",
+              "});\r",
+              "pm.test(\"Each user has 'to_role' field\", function () {\r",
+              "    jsonData.commissions.forEach((user, index) => {\r",
+              "        pm.expect(user, `User[${index}] missing 'to_role'`).to.have.property('to_role');\r",
+              "    });\r",
+              "});\r",
+              "pm.test(\"Each user has 'type' field\", function () {\r",
+              "    jsonData.commissions.forEach((user, index) => {\r",
+              "        pm.expect(user, `User[${index}] missing 'type'`).to.have.property('type');\r",
+              "    });\r",
+              "});\r",
+              "pm.test(\"Each user has 'value' field\", function () {\r",
+              "    jsonData.commissions.forEach((user, index) => {\r",
+              "        pm.expect(user, `User[${index}] missing 'value'`).to.have.property('value');\r",
+              "    });\r",
+              "});\r",
+              "pm.test(\"Each user has 'status' field\", function () {\r",
+              "    jsonData.commissions.forEach((user, index) => {\r",
+              "        pm.expect(user, `User[${index}] missing 'status'`).to.have.property('status');\r",
+              "    });\r",
+              "});\r",
+              "pm.test(\"Each user has 'created_at' field\", function () {\r",
+              "    jsonData.commissions.forEach((user, index) => {\r",
+              "        pm.expect(user, `User[${index}] missing 'created_at'`).to.have.property('created_at');\r",
+              "    });\r",
+              "});\r",
+              "pm.test(\"Each user has 'updated_at' field\", function () {\r",
+              "    jsonData.commissions.forEach((user, index) => {\r",
+              "        pm.expect(user, `User[${index}] missing 'updated_at'`).to.have.property('updated_at');\r",
+              "});\r",
+              "pm.execution.setNextRequest(\"deposit-system-to-agent\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [
@@ -1568,6 +1680,128 @@
     },
     {
       "name": "deposit-system-to-agent",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var res = pm.response.json();\r",
+              "var request = JSON.parse(pm.request.body.raw);\r",
+              "\r",
+              "var amount = request.amount;\r",
+              "var commission = res.commission;\r",
+              "var agentCurrentBalance = res.currentBalance;\r",
+              "\r",
+              "var agentPreviousBalance = pm.environment.get(\"agent_balance\");\r",
+              "if (agentPreviousBalance === null || agentPreviousBalance === undefined || agentPreviousBalance === \"\") {\r",
+              "    agentPreviousBalance = 0;\r",
+              "}\r",
+              "agentPreviousBalance = Number(agentPreviousBalance);\r",
+              "\r",
+              "var agentExpectedBalance = (agentPreviousBalance + amount) - commission;\r",
+              "\r",
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 2000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response message is : Deposit successful\", () => {\r",
+              "    pm.expect(res.message).to.eql(\"Deposit successful\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Agent balance is updated correctly\", () => {\r",
+              "    pm.expect(agentCurrentBalance).to.eql(agentExpectedBalance);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response have message property\", () => {\r",
+              "    pm.expect(res).to.have.property(\"message\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response have trnxId property\", () => {\r",
+              "    pm.expect(res).to.have.property(\"trnxId\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"trnxId is a string and not empty\", () => {\r",
+              "    pm.expect(res.trnxId).to.be.a(\"string\");\r",
+              "    pm.expect(res.trnxId).to.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response have commission property\", () => {\r",
+              "    pm.expect(res).to.have.property(\"commission\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response have currentBalance property\", () => {\r",
+              "    pm.expect(res).to.have.property(\"currentBalance\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Commission is 12.5\", () => {\r",
+              "    pm.expect(res.commission).to.eql(12.5);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Commission is a positive number\", () => {\r",
+              "    pm.expect(res.commission).to.be.a(\"number\");\r",
+              "    pm.expect(res.commission).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"currentBalance data type is number\", () => {\r",
+              "    pm.expect(res.currentBalance).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"currentBalance is a positive number\", () => {\r",
+              "    pm.expect(res.currentBalance).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains all required fields\", () => {\r",
+              "    pm.expect(res).to.have.all.keys(\r",
+              "        \"message\",\r",
+              "        \"trnxId\",\r",
+              "        \"commission\",\r",
+              "        \"currentBalance\"\r",
+              "    );\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has exactly 4 fields\", () => {\r",
+              "    pm.expect(Object.keys(res).length).to.eql(4);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"All fields have correct data types\", () => {\r",
+              "    pm.expect(res.message).to.be.a(\"string\");\r",
+              "    pm.expect(res.trnxId).to.be.a(\"string\");\r",
+              "    pm.expect(res.commission).to.be.a(\"number\");\r",
+              "    pm.expect(res.currentBalance).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "pm.environment.set(\"agent_balance\", agentCurrentBalance);\r",
+              "\r",
+              "console.log(\"Previous Agent Balance: \" + agentPreviousBalance);\r",
+              "console.log(\"Deposited Amount: \" + amount);\r",
+              "console.log(\"Commission: \" + commission);\r",
+              "console.log(\"Expected Balance: \" + agentExpectedBalance);\r",
+              "console.log(\"Actual Current Balance: \" + agentCurrentBalance);\r",
+              "console.log(\"Response Code: \" + pm.response.code);\r",
+              "\r",
+              "pm.execution.setNextRequest(\"agent-login\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
@@ -1584,7 +1818,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"from_account\": \"SYSTEM\",\r\n  \"to_account\": \"{{agent_phone}}\",\r\n  \"amount\": 1000\r\n}",
+          "raw": "{\r\n  \"from_account\": \"SYSTEM\",\r\n  \"to_account\": \"{{agent_phone}}\",\r\n  \"amount\": 100000\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1605,12 +1839,114 @@
       "response": []
     },
     {
-      "name": "Deposit (SYSTEM → Customer)",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
+      "name": "Deposit SYSTEM to Customer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var response = pm.response.json();\r",
+              "var request = JSON.parse(pm.request.body.raw);\r",
+              "\r",
+              "var depositedAmount = request.amount;\r",
+              "var creditedAmount = response.creditedAmount;\r",
+              "var currentBalance = response.currentBalance;\r",
+              "var previousCustomerBalance = pm.environment.get(\"customer_balance\");\r",
+              "if (previousCustomerBalance === null || previousCustomerBalance === undefined || previousCustomerBalance === \"\") {\r",
+              "    previousCustomerBalance = 0;\r",
+              "}\r",
+              "previousCustomerBalance = Number(previousCustomerBalance);\r",
+              "\r",
+              "var expectedCustomerBalance = previousCustomerBalance + depositedAmount;\r",
+              "\r",
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 2000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-Type is application/json\", function () {\r",
+              "    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Message is 'Customer balance credited successfully'\", function () {\r",
+              "    pm.expect(response.message).to.eql(\"Customer balance credited successfully\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Transaction ID exists and is not empty\", function () {\r",
+              "    pm.expect(response.trnxId).to.be.a(\"string\");\r",
+              "    pm.expect(response.trnxId).to.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Source matches the from_account in request\", function () {\r",
+              "    pm.expect(response.source).to.eql(\"SYSTEM\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Credited amount matches the requested amount\", function () {\r",
+              "    pm.expect(response.creditedAmount).to.eql(depositedAmount);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Fee is a number and is zero or positive\", function () {\r",
+              "    pm.expect(response.fee).to.be.a(\"number\");\r",
+              "    pm.expect(response.fee).to.be.at.least(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Commission is a number and is zero or positive\", function () {\r",
+              "    pm.expect(response.commission).to.be.a(\"number\");\r",
+              "    pm.expect(response.commission).to.be.at.least(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Current balance is a positive number\", function () {\r",
+              "    pm.expect(response.currentBalance).to.be.a(\"number\");\r",
+              "    pm.expect(response.currentBalance).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Current balance is greater than or equal to credited amount\", function () {\r",
+              "    pm.expect(response.currentBalance).to.be.at.least(response.creditedAmount);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Current Balance is updated successfully\", function () {\r",
+              "    pm.expect(currentBalance).to.eql(expectedCustomerBalance);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains all required fields\", function () {\r",
+              "    pm.expect(response).to.have.property(\"message\");\r",
+              "    pm.expect(response).to.have.property(\"trnxId\");\r",
+              "    pm.expect(response).to.have.property(\"source\");\r",
+              "    pm.expect(response).to.have.property(\"creditedAmount\");\r",
+              "    pm.expect(response).to.have.property(\"fee\");\r",
+              "    pm.expect(response).to.have.property(\"commission\");\r",
+              "    pm.expect(response).to.have.property(\"currentBalance\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has exactly 7 fields\", function () {\r",
+              "    pm.expect(Object.keys(response).length).to.eql(7);\r",
+              "});\r",
+              "pm.environment.set(\"customer_balance\", currentBalance);\r",
+              "\r",
+              "pm.execution.setNextRequest(\"customer-login\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
-        "method": "GET",
+        "method": "POST",
         "header": [
           {
             "key": "Authorization",
@@ -1625,7 +1961,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"from_account\": \"SYSTEM\",\r\n  \"to_account\": \"{{customer_phone}}\",\r\n  \"amount\": 5\r\n}",
+          "raw": "{\r\n  \"from_account\": \"SYSTEM\",\r\n  \"to_account\": \"{{customer_phone}}\",\r\n  \"amount\": 10000\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1647,7 +1983,100 @@
       "response": []
     },
     {
-      "name": "Deposit (AGENT → Customer)",
+      "name": "Deposit AGENT to Customer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 2000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "var response = pm.response.json();\r",
+              "var request = JSON.parse(pm.request.body.raw);\r",
+              "\r",
+              "pm.test(\"Message is 'Customer balance credited successfully'\", function () {\r",
+              "    pm.expect(response.message).to.eql(\"Customer balance credited successfully\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Transaction ID exists and is not empty\", function () {\r",
+              "    pm.expect(response.trnxId).to.be.a(\"string\");\r",
+              "    pm.expect(response.trnxId).to.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Source is AGENT\", function () {\r",
+              "    pm.expect(response.source).to.eql(\"AGENT\");\r",
+              "});\r",
+              "pm.test(\"Credited amount matches requested amount\", function () {\r",
+              "    pm.expect(response.creditedAmount).to.eql(request.amount);\r",
+              "});\r",
+              "pm.test(\"Credited amount is 2000\", function () {\r",
+              "    pm.expect(response.creditedAmount).to.eql(2000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Fee is zero or positive\", function () {\r",
+              "    pm.expect(response.fee).to.be.a(\"number\");\r",
+              "    pm.expect(response.fee).to.be.at.least(0);\r",
+              "});\r",
+              "pm.test(\"Commission is zero or positive\", function () {\r",
+              "    pm.expect(response.commission).to.be.a(\"number\");\r",
+              "    pm.expect(response.commission).to.be.at.least(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Current balance is positive\", function () {\r",
+              "    pm.expect(response.currentBalance).to.be.a(\"number\");\r",
+              "    pm.expect(response.currentBalance).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Current balance is at least the credited amount\", function () {\r",
+              "    pm.expect(response.currentBalance).to.be.at.least(response.creditedAmount);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains all required fields\", function () {\r",
+              "    pm.expect(response).to.have.all.keys(\r",
+              "        \"message\",\r",
+              "        \"trnxId\",\r",
+              "        \"source\",\r",
+              "        \"creditedAmount\",\r",
+              "        \"fee\",\r",
+              "        \"commission\",\r",
+              "        \"currentBalance\"\r",
+              "    );\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has exactly 7 fields\", function () {\r",
+              "    pm.expect(Object.keys(response).length).to.eql(7);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"All fields have correct data types\", function () {\r",
+              "    pm.expect(response.message).to.be.a(\"string\");\r",
+              "    pm.expect(response.trnxId).to.be.a(\"string\");\r",
+              "    pm.expect(response.source).to.be.a(\"string\");\r",
+              "    pm.expect(response.creditedAmount).to.be.a(\"number\");\r",
+              "    pm.expect(response.fee).to.be.a(\"number\");\r",
+              "    pm.expect(response.commission).to.be.a(\"number\");\r",
+              "    pm.expect(response.currentBalance).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Store transaction data in environment\", function () {\r",
+              "    //pm.environment.set(\"last_trnxId\", response.trnxId);\r",
+              "    pm.environment.set(\"customer_balance\", response.currentBalance);\r",
+              "});\r",
+              "\r",
+              "pm.execution.setNextRequest(\"Deposit SYSTEM to Customer\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
@@ -1664,7 +2093,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"from_account\": \"{{agent_phone}}\",\r\n  \"to_account\": \"{{customer_phone}}\",\r\n  \"amount\": 50\r\n}",
+          "raw": "{\r\n  \"from_account\": \"{{agent_phone}}\",\r\n  \"to_account\": \"{{customer_phone}}\",\r\n  \"amount\": 2000\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1687,6 +2116,136 @@
     },
     {
       "name": "withdraw-customer-to-agent",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var response = pm.response.json();\r",
+              "var request = JSON.parse(pm.request.body.raw);\r",
+              "var statusCode = pm.response.code;\r",
+              "\r",
+              "if (statusCode === 201) {\r",
+              "    handleSuccessCase();\r",
+              "} else if (statusCode === 403) {\r",
+              "    handleInsufficientBalanceCase();\r",
+              "} else {\r",
+              "    pm.test(`Unexpected status code: ${statusCode}`, function () {\r",
+              "        pm.expect.fail(`Received unexpected status code: ${statusCode}`);\r",
+              "    });\r",
+              "}\r",
+              "\r",
+              "function handleSuccessCase() {\r",
+              "\r",
+              "    pm.test(\"Status code is 201\", function () {\r",
+              "        pm.response.to.have.status(201);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Response time is less than 2000ms\", function () {\r",
+              "        pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "    });\r",
+              "\r",
+              "    var customerPreviousBalance = pm.environment.get(\"customer_balance\");\r",
+              "    var fee = response.fee;\r",
+              "    var currentBalance = response.currentBalance;\r",
+              "    var amount = request.amount;\r",
+              "    var customerCurrentBalance = customerPreviousBalance - amount - fee;\r",
+              "\r",
+              "    pm.test(\"Store transaction data\", function () {\r",
+              "        pm.environment.set(\"customer_balance\", response.currentBalance);\r",
+              "        pm.environment.set(\"withdraw_fee\", response.fee);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"currentBalance calculation is correct\", function () {\r",
+              "        pm.expect(currentBalance).to.eql(customerCurrentBalance);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Message is 'Withdraw successful'\", function () {\r",
+              "        pm.expect(response.message).to.eql(\"Withdraw successful\");\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Transaction ID exists and is not empty\", function () {\r",
+              "        pm.expect(response.trnxId).to.be.a(\"string\");\r",
+              "        pm.expect(response.trnxId).to.not.be.empty;\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Fee is a positive number\", function () {\r",
+              "        pm.expect(response.fee).to.be.a(\"number\");\r",
+              "        pm.expect(response.fee).to.be.above(0);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Fee is less than requested withdrawal amount\", function () {\r",
+              "        pm.expect(response.fee).to.be.below(request.amount);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Current balance is positive\", function () {\r",
+              "        pm.expect(response.currentBalance).to.be.a(\"number\");\r",
+              "        pm.expect(response.currentBalance).to.be.above(0);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Response contains all required fields\", function () {\r",
+              "        pm.expect(response).to.have.all.keys(\r",
+              "            \"message\",\r",
+              "            \"trnxId\",\r",
+              "            \"fee\",\r",
+              "            \"currentBalance\"\r",
+              "        );\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Response has exactly 4 fields\", function () {\r",
+              "        pm.expect(Object.keys(response).length).to.eql(4);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"All fields have correct data types\", function () {\r",
+              "        pm.expect(response.message).to.be.a(\"string\");\r",
+              "        pm.expect(response.trnxId).to.be.a(\"string\");\r",
+              "        pm.expect(response.fee).to.be.a(\"number\");\r",
+              "        pm.expect(response.currentBalance).to.be.a(\"number\");\r",
+              "    });\r",
+              "\r",
+              "\r",
+              "    pm.execution.setNextRequest(\"send-money-customer-to-customer\");\r",
+              "}\r",
+              "\r",
+              "\r",
+              "function handleInsufficientBalanceCase() {\r",
+              "\r",
+              "    pm.test(\"Status code is 403 for insufficient balance\", function () {\r",
+              "        pm.response.to.have.status(403);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Message is 'Insufficient balance'\", function () {\r",
+              "        pm.expect(response.message).to.eql(\"Insufficient balance\");\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Response contains only 'message' field\", function () {\r",
+              "        pm.expect(response).to.have.all.keys(\"message\");\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Response has exactly 1 field\", function () {\r",
+              "        pm.expect(Object.keys(response).length).to.eql(1);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Message field is a string\", function () {\r",
+              "        pm.expect(response.message).to.be.a(\"string\");\r",
+              "    });\r",
+              "    pm.environment.set(\"customer_balance\",0);\r",
+              "    pm.test(\"Customer balance remains unchanged\", function () {\r",
+              "        var customerPreviousBalance = pm.environment.get(\"customer_balance\");\r",
+              "        // Balance should NOT be updated on failure\r",
+              "        pm.expect(Number(customerPreviousBalance)).to.be.a(\"number\");\r",
+              "        console.log(\"Customer Balance unchanged: \" +customerPreviousBalance);\r",
+              "    });\r",
+              "\r",
+              "    pm.execution.setNextRequest(null); \r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
@@ -1725,6 +2284,64 @@
     },
     {
       "name": "send-money-customer-to-customer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var response = pm.response.json();\r",
+              "var request = JSON.parse(pm.request.body.raw);\r",
+              "\r",
+              "//var fee = parseFloat(response.fee);\r",
+              "var fee = response.fee;\r",
+              "var amount = request.amount;\r",
+              "var currentBalance = response.currentBalance;\r",
+              "\r",
+              "var previousBalance = pm.environment.get(\"customer_balance\");\r",
+              "\r",
+              "console.log(\"Previous Balance: \" + typeof previousBalance);\r",
+              "console.log(\"Amount: \" + typeof amount);\r",
+              "console.log(\"Fee: \" + fee);\r",
+              "console.log(\"Fee Type: \" + typeof fee);  \r",
+              "console.log(\"Current Balance: \" + typeof currentBalance);\r",
+              "\r",
+              "\r",
+              "var expectedBalance = previousBalance - amount - fee;\r",
+              "//console.log(\"Expected Balance: \" + expectedBalance);\r",
+              "\r",
+              "pm.test(\"Current balance calculation is correct\", () => {\r",
+              "    pm.expect(currentBalance).to.equal(expectedBalance);\r",
+              "});\r",
+              "pm.environment.set(\"customer_balance\", currentBalance);\r",
+              "pm.test(\"Message is :Send money successful\",()=>{\r",
+              "    pm.expect(response.message).to.eql(\"Send money successful\");\r",
+              "});\r",
+              "pm.test(\"Transaction Id is not empty\",()=>{\r",
+              "      pm.expect(response.trnxId).to.not.eql(\"\");\r",
+              "});\r",
+              "pm.test(\"Fee is 1.50 which is fixed amount for every send money transaction\",()=>{\r",
+              "    pm.expect(fee).to.eql(\"1.50\");\r",
+              "})\r",
+              "pm.execution.setNextRequest(\"payment-customer-to-merchant\");\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
@@ -1763,6 +2380,53 @@
     },
     {
       "name": "payment-customer-to-merchant",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var response = pm.response.json();\r",
+              "var request = JSON.parse(pm.request.body.raw);\r",
+              "\r",
+              "var amount = request.amount;\r",
+              "var commission = response.commission;\r",
+              "var currentBalance = response.currentBalance;\r",
+              "var customerPreviousBalance = pm.environment.get(\"customer_balance\");\r",
+              "\r",
+              "var expectedCustomerBalance = customerPreviousBalance -amount- commission;\r",
+              "\r",
+              "console.log(\"amount is : \"+ amount);\r",
+              "console.log(\"commission is : \",+ commission);\r",
+              "console.log(\"currentBalance is : \", + currentBalance);\r",
+              "console.log(\"customerPreviousBalance is : \",+ customerPreviousBalance);\r",
+              "console.log(\"expectedCustomerBalance is : \", + customerPreviousBalance);\r",
+              "pm.environment.set(\"customer_balance\",currentBalance);\r",
+              "\r",
+              "pm.test(\"Current Balance calculation is correct\",()=>{\r",
+              "    pm.expect(currentBalance).to.eql(expectedCustomerBalance);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"trnxId not empty\",()=>{\r",
+              "    pm.expect(response.trnxId).to.not.eql(\"\");\r",
+              "});\r",
+              "pm.test(\"commission is 5.00\",()=>{\r",
+              "    pm.expect(commission).to.eql(\"5.00\");\r",
+              "});\r",
+              "pm.test(\"Message is : Payment successful\",()=>{\r",
+              "    pm.expect(response.message).to.eql(\"Payment successful\");\r",
+              "});\r",
+              "pm.test(\"currentBalance is not empty\",()=>{\r",
+              "    pm.expect(\"currentBalance\").to.not.eql(\"\");\r",
+              "})\r",
+              "\r",
+              "pm.execution.setNextRequest(\"balance-check\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
@@ -1779,7 +2443,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"from_account\": \"{{customer_phone}}\",\r\n  \"to_account\": \"{{merchant_phone}}\",\r\n  \"amount\": 1\r\n\r\n}",
+          "raw": "{\r\n  \"from_account\": \"{{customer_phone}}\",\r\n  \"to_account\": \"{{merchant_phone}}\",\r\n  \"amount\": 100\r\n\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1801,6 +2465,19 @@
     },
     {
       "name": "transaction-history",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.execution.setNextRequest(\"transaction-details\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [
@@ -1816,7 +2493,7 @@
           }
         ],
         "url": {
-          "raw": "{{base_url}}/transaction/history/{{customer_phone}}?page=1&limit=20",
+          "raw": "{{base_url}}/transaction/history/{{customer_phone}}?limit=50",
           "host": [
             "{{base_url}}"
           ],
@@ -1828,11 +2505,12 @@
           "query": [
             {
               "key": "page",
-              "value": "1"
+              "value": "1",
+              "disabled": true
             },
             {
               "key": "limit",
-              "value": "20"
+              "value": "50"
             }
           ]
         }
@@ -1841,6 +2519,19 @@
     },
     {
       "name": "transaction-details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.execution.setNextRequest(Null);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [
@@ -1870,6 +2561,19 @@
     },
     {
       "name": "balance-check",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.execution.setNextRequest(\"transaction-history\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [
@@ -1885,14 +2589,14 @@
           }
         ],
         "url": {
-          "raw": "{{base_url}}/transaction/balance/{{agent_phone}}",
+          "raw": "{{base_url}}/transaction/balance/{{customer_phone}}",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "transaction",
             "balance",
-            "{{agent_phone}}"
+            "{{customer_phone}}"
           ]
         }
       },

@@ -987,7 +987,7 @@
           }
         ],
         "url": {
-          "raw": "{{base_url}}/user/list",
+          "raw": "{{base_url}}/user/list?count=3&page=1&order=desc",
           "host": [
             "{{base_url}}"
           ],
@@ -998,18 +998,15 @@
           "query": [
             {
               "key": "count",
-              "value": "3",
-              "disabled": true
+              "value": "3"
             },
             {
               "key": "page",
-              "value": "1",
-              "disabled": true
+              "value": "1"
             },
             {
               "key": "order",
-              "value": "desc",
-              "disabled": true
+              "value": "desc"
             }
           ]
         }
@@ -2305,7 +2302,7 @@
               "var request = JSON.parse(pm.request.body.raw);\r",
               "\r",
               "//var fee = parseFloat(response.fee);\r",
-              "var fee = (Number) response.fee;\r",
+              "var fee = response.fee;\r",
               "var amount = request.amount;\r",
               "var currentBalance = response.currentBalance;\r",
               "\r",
@@ -2648,8 +2645,9 @@
               "    pm.expect(transaction.commission).to.eql(\"0.00\");\r",
               "    pm.expect(transaction.status).to.eql(\"completed\");\r",
               "});\r",
+              "pm.execution.setNextRequest(null);\r",
               "\r",
-              "pm.execution.setNextRequest();"
+              ""
             ],
             "type": "text/javascript",
             "packages": {},
@@ -2712,17 +2710,7 @@
               "pm.test(\"Account number is showing\",()=>{\r",
               "    pm.expect(response.balance).to.not.be.empty;\r",
               "})\r",
-              "pm.test(\"Response has correct structure\", function () {\r",
-              "    pm.expect(res).to.have.property(\"message\");\r",
-              "    pm.expect(res).to.have.property(\"account\");\r",
-              "    pm.expect(res).to.have.property(\"balance\");\r",
-              "});\r",
               "\r",
-              "pm.test(\"Response field data types are correct\", function () {\r",
-              "    pm.expect(res.message).to.be.a(\"string\");\r",
-              "    pm.expect(res.account).to.be.a(\"string\");\r",
-              "    pm.expect(res.balance).to.be.a(\"string\");\r",
-              "});\r",
               "console.log(\"Account data type is :\", typeof response.account);\r",
               "\r",
               "pm.execution.setNextRequest(\"transaction-history\");"

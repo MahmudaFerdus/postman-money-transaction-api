@@ -1,43 +1,47 @@
 Money Transaction API – Automated Postman Collection (With Security Analysis)
 This repository contains a fully automated Postman Collection and Environment file for testing the Money Transaction System API.
 
-The collection simulates a complete financial ecosystem including:
+The collection simulates a complete financial ecosystem involving multiple user roles and performs end-to-end transaction workflows automatically.
 
-1.Admin
-2.Agent
-3.Customer
-4.Merchant
-
-All requests execute sequentially using:
+Roles Covered
+Admin
+Agent
+Customer
+Merchant
+All requests are executed sequentially using:
 
 JavaScript
 
 postman.setNextRequest()
-ensuring a complete end‑to‑end financial workflow.
+This ensures a proper business flow from user creation to transaction history without manual intervention.
 
- Base Configuration
- Base URL : https://mta.newroztech.com/api
- Authentication Keys
+Base Configuration
+Base URL
+text
+
+https://mta.newroztech.com/api
+Authentication Keys
+text
 
 AUTH_SECRET_KEY: e97b4ca15fd2b3086c1e4af98b72d503
 AUTH-SECRET-KEY-SYSTEM: b82439df1c92a7fe504bf23da918e6f1
-These are configured inside the Postman Environment.
+These values are configured inside the Postman Environment.
 
 Environment Variables
-Manually Configured
-Variable	Value
+Manually Configured Variables
+Variable Name	Value
 base_url	https://mta.newroztech.com/api
 auth_secret_key	e97b4ca15fd2b3086c1e4af98b72d503
 secret_key_system	b82439df1c92a7fe504bf23da918e6f1
-Automatically Set via Postman Scripts
-All tokens, IDs, and dynamic data are automatically stored from API responses using Postman test scripts:
+Automatically Set via Postman Test Scripts
+All tokens, IDs, balances, and other dynamic values are captured from API responses and stored automatically using Postman scripts.
 
 Example:
 
 JavaScript
-pm.environment.set("admin_token", pm.response.json().token);
 
-Auto-generated Variables
+pm.environment.set("admin_token", pm.response.json().token);
+Auto-generated Variables Include:
 admin_token
 agent_token
 customer_token
@@ -49,15 +53,15 @@ customer_balance
 agent_balance
 withdraw_fee
 transaction_id
-and many more...
-* No manual token copying
-* Fully automated execution
-*Dynamic data chaining across requests
+and other transaction-related values
+✔ No manual token copying
+✔ Fully automated execution
+✔ Dynamic data reuse across requests
 
 Automated Execution Flow
-The collection runs in the following strict order:
+The collection runs in the following strict sequence:
 
-** Admin Operations
+Admin Operations
 Admin Login
 Create Customer
 Create Agent
@@ -65,17 +69,15 @@ Create Merchant
 User List
 Search User by Email
 Search User by ID
-Create Virtual Money (SYSTEM)
+Create Virtual Money (From SYSTEM)
 System Virtual Balance
 Commission Create
 Commission Listing
 Deposit System → Agent
-
-**Agent Operations
+Agent Operations
 Agent Login
 Deposit Agent → Customer
-
-** Customer Operations
+Customer Operations
 Deposit System → Customer
 Customer Login
 Withdraw Customer → Agent
@@ -84,90 +86,76 @@ Payment (Customer → Merchant)
 Balance Check
 Transaction History
 Transaction Details
+The request order is controlled programmatically. Manual reordering is not required.
 
 Identified Security Issues (Authorization Bugs)
-During testing, several critical authorization vulnerabilities were discovered.
+During testing, several authorization weaknesses were identified.
 
 1. Improper Role-Based Access Control (RBAC)
-The API does not properly validate user roles against their permissions.
+The API does not strictly validate user roles against endpoint permissions.
 
- Example Findings:
- If logged in as a Customer,
- and the customer_token is used in the Authorization header:
+Observation:
+If logged in as a Customer, and the customer_token is used in the Authorization header:
 
-Customer can create Virtual Money
-Customer can create Commission
-Customer can perform Admin-level operations
-These actions should only be allowed for Admin role.
+The customer can create Virtual Money
+The customer can create Commission
+The customer can perform Admin-level operations
+These operations should be restricted to the Admin role only.
 
 2. Token Misuse Across Roles
-Even when using:
+Endpoints that require admin_token still work when customer_token is used.
 
-text
+Example:
 
-Authorization: Bearer {{customer_token}}
-for endpoints that require:
-
-text
-
-Authorization: Bearer {{admin_token}}
-the API still allows execution.
-
- Example:
 Deposit System → Agent
-Expected: Admin Token Required
-Actual: Works with Customer Token
-This indicates:
 
-No strict role validation
-Missing permission checks
-Backend only validating token existence, not role authority
+Expected: Admin token required
+Actual: Works with customer_token
+This suggests that the backend validates only token existence, not role permissions.
+
 3. Secret Key Validation Weakness
 When combining:
 
 customer_token
 AUTH_SECRET_KEY
 AUTH-SECRET-KEY-SYSTEM
-The system still allows privileged operations.
+Privileged operations can still be performed.
 
-This suggests:
+This indicates missing server-side authorization enforcement and weak privilege separation.
 
-Improper privilege separation
-Missing server-side authorization enforcement
 Security Impact
-These issues may lead to:
+These issues may result in:
 
-Privilege Escalation
-Unauthorized Fund Creation
-Unauthorized Commission Manipulation
-Financial Fraud Risk
-System Integrity Compromise
-Recommendation (As QA Observation)
-To fix these issues, the API should implement:
+Privilege escalation
+Unauthorized fund creation
+Commission manipulation
+Financial system abuse
+Compromise of system integrity
+Recommendations
+Based on testing observations, the following improvements are recommended:
 
-Strict Role-Based Access Control (RBAC)
-Server-side role verification per endpoint
-Proper token-role mapping validation
-Middleware-level permission enforcement
-Separation of Admin/System privileges
- What This Project Demonstrates
- End-to-End API Automation
- Advanced Postman Scripting
- Multi-Role Workflow Testing
- Dynamic Environment Handling
- Financial Transaction Simulation
- Security Vulnerability Identification
- Authorization & Access Control Testing
-This project not only demonstrates automation skills but also security-focused API testing capability.
+Implement strict Role-Based Access Control (RBAC)
+Enforce role validation at middleware level
+Validate token-role mapping on every protected endpoint
+Separate Admin and System privileges clearly
+Prevent cross-role token misuse
+What This Project Demonstrates
+End-to-End API Automation
+Advanced Postman scripting
+Multi-role workflow testing
+Dynamic environment variable handling
+Financial transaction lifecycle validation
+Security and authorization testing
+This project demonstrates both functional automation and security-focused API testing.
 
-📖 API Documentation
-👉 https://documenter.getpostman.com/view/22815578/2sBXcAH2jZ
+API Documentation
+https://documenter.getpostman.com/view/22815578/2sBXcAH2jZ
 
-👩‍💻 Author
+Author
 Mahmuda Ferdus
 GitHub: https://github.com/MahmudaFerdus
 
-📌 Project Purpose
+Project Purpose
 This project was built for:
 
-API Automation Practice
+API automation practice

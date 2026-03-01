@@ -134,7 +134,6 @@ Everything runs automatically. No manual steps.
 ### 👩‍💻 Author
 
 **Mahmuda Ferdus**  
-Security-Minded QA Automation Engineer  
 [![GitHub](https://img.shields.io/badge/GitHub-MahmudaFerdus-black?style=flat-square&logo=github)](https://github.com/MahmudaFerdus)
 
 > **Purpose:** Advanced automation practice + real security research  

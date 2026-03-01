@@ -73,10 +73,10 @@ All executed in perfect order using Collection Runner.
 🔐 Critical Security Vulnerabilities Discovered
 
 
-#	Vulnerability	Severity	Status	What Actually Happens (Plain English)
-1	Zero RBAC Enforcement	🔴 Critical	Exploitable	🚨 A normal Customer can print unlimited money<br>Yes, you read that right. They just send one request with their customer_token → the server happily creates billions for them.<br>Same as giving every customer the central bank's printing machine — on steroids.
-2	Cross-Role Token Misuse	🔴 Critical	Exploitable	🚨 Customer token = Admin token<br>Endpoints that scream "Admin only!" in the docs actually accept customer_token without complaining.<br>Real example: "Deposit System → Agent" works perfectly with customer token → Customer can silently fund any account like a god — forever.
-3	Secret Key Validation Completely Broken	🟠 High	Exploitable	🚨 Just paste 3 lines and become God<br>Take your customer_token + the two "super secret" keys from the environment → send → Instant full Admin + System access.<br>No 2FA. No questions. No logs. Just god mode unlocked in 1 click.
+#	Vulnerability	Severity	Status	What Actually Happens 
+1	Zero RBAC Enforcement	:  A normal Customer can print unlimited money<br>Yes, you read that right. They just send one request with their customer_token → the server happily creates billions for them.<br>Same as giving every customer the central bank's printing machine — on steroids.
+2	Cross-Role Token Misuse	: Customer token = Admin token<br>Endpoints that scream "Admin only!" in the docs actually accept customer_token without complaining.<br>Real example: "Deposit System → Agent" works perfectly with customer token → Customer can silently fund any account like a god — forever.
+3	Secret Key Validation Completely Broken	: Just paste 3 lines and become God<br>Take your customer_token + the two "super secret" keys from the environment → send → Instant full Admin + System access.<br>No 2FA. No questions. No logs. Just god mode unlocked in 1 click.
 🔥 Real-World Attack Scenarios (What an attacker can do in < 2 minutes)
 
 Attack Scenario	Possible?	Outcome
@@ -92,8 +92,7 @@ This is a bank with the vault door wide open and the keys taped to the front des
 
 Any customer who runs this Postman collection instantly becomes the owner of the entire financial platform.
 
-That’s why these are rated Critical → Critical → High
-→ 100% Remote, No Authentication Required Beyond Signup, Total Compromise.
+
 
 ---
 

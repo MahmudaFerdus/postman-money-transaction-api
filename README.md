@@ -1,37 +1,38 @@
-Money Transaction API – Automated Postman Collection (With Security Analysis)
-This repository contains a fully automated Postman Collection and Environment file for testing the Money Transaction System API. It simulates a complete financial ecosystem with multiple user roles and performs end-to-end transaction workflows without manual intervention.
+💰 Money Transaction API
+Automated Postman Collection (With Security Analysis)
+This repository contains a fully automated Postman Collection & Environment for testing a Money Transaction System API.
 
-Beyond functional testing, this project also identifies critical security vulnerabilities in authorization and access control.
+It simulates a complete financial ecosystem with multiple roles and executes end‑to‑end workflows automatically.
+
+In addition to functional testing, this project identifies critical authorization vulnerabilities.
 
 📄 API Documentation
 https://documenter.getpostman.com/view/22815578/2sBXcAH2jZ
 
-Roles Covered
-Role	Responsibilities
-Admin	User management, virtual money creation, commissions, system deposits
-Agent	Deposits to customers
-Customer	Withdrawals, transfers, payments, balance & history
-Merchant	Receives payments from customers
-Base Configuration
-Parameter	Value
-Base URL	https://mta.newroztech.com/api
-AUTH_SECRET_KEY	e97b4ca15fd2b3086c1e4af98b72d503
-AUTH-SECRET-KEY-SYSTEM	b82439df1c92a7fe504bf23da918e6f1
-These values are pre-configured in the Postman Environment file.
+👥 Roles Covered
+Role	Key Capabilities
+Admin	Manage users, create virtual money, manage commissions, system deposits
+Agent	Deposit money to customers
+Customer	Withdraw, transfer, pay merchants, check balance
+Merchant	Receive customer payments
+⚙️ Base Configuration
+Base URL: https://mta.newroztech.com/api
+AUTH_SECRET_KEY: e97b4ca15fd2b3086c1e4af98b72d503
+AUTH-SECRET-KEY-SYSTEM: b82439df1c92a7fe504bf23da918e6f1
+Configured inside the Postman Environment.
 
-Environment Variables
-Manually Configured
-Variable	Value
-base_url	https://mta.newroztech.com/api
-auth_secret_key	e97b4ca15fd2b3086c1e4af98b72d503
-secret_key_system	b82439df1c92a7fe504bf23da918e6f1
-Auto-Generated via Postman Scripts
-All tokens, IDs, balances, and dynamic values are captured automatically:
+🌍 Environment Variables
+✅ Manually Configured
+base_url
+auth_secret_key
+secret_key_system
+✅ Automatically Generated (via Test Scripts)
+Example:
 
 JavaScript
 
 pm.environment.set("admin_token", pm.response.json().token);
-Generated Variables
+Auto-Captured Values
 admin_token
 agent_token
 customer_token
@@ -39,104 +40,96 @@ merchant_token
 customer_id
 agent_id
 merchant_id
-customer_balance
-agent_balance
-withdraw_fee
+balances
 transaction_id
-and more...
-Feature	Status
-Manual token copying	❌ Not Required
-Automated execution	✅ Fully Automated
-Dynamic data reuse	✅ Supported
-Automated Execution Flow
-All requests run sequentially using postman.setNextRequest().
+withdraw_fee
+Automation Features
+✅ No manual token copying
+✅ Fully sequential execution
+✅ Dynamic data reuse across requests
+🔄 Automated Execution Flow
+All requests run sequentially using:
 
-Admin Operations
-Step	Request
-1	Admin Login
-2	Create Customer
-3	Create Agent
-4	Create Merchant
-5	User List
-6	Search User by Email
-7	Search User by ID
-8	Create Virtual Money (From SYSTEM)
-9	System Virtual Balance
-10	Commission Create
-11	Commission Listing
-12	Deposit System → Agent
-Agent Operations
-Step	Request
-13	Agent Login
-14	Deposit Agent → Customer
-Customer Operations
-Step	Request
-15	Deposit System → Customer
-16	Customer Login
-17	Withdraw Customer → Agent
-18	Send Money (Customer → Customer)
-19	Payment (Customer → Merchant)
-20	Balance Check
-21	Transaction History
-22	Transaction Details
-Identified Security Issues (Authorization Bugs)
-Bug Summary
-#	Issue	Severity
-1	Improper Role-Based Access Control (RBAC)	Critical
-2	Token Misuse Across Roles	Critical
-3	Secret Key Validation Weakness	High
-Bug 1: Improper Role-Based Access Control (RBAC)
-The API does not strictly validate user roles against endpoint permissions.
+text
 
-Action Using Customer Token	Expected	Actual
-Create Virtual Money	Denied	Allowed
-Create Commission	Denied	Allowed
-Perform Admin Operations	Denied	Allowed
-These operations should be restricted to the Admin role only.
+postman.setNextRequest()
+Admin Workflow
+Admin Login
+Create Customer
+Create Agent
+Create Merchant
+User Search & Listing
+Create Virtual Money
+Commission Setup
+Deposit System → Agent
+Agent Workflow
+Agent Login
+Deposit Agent → Customer
+Customer Workflow
+Deposit System → Customer
+Customer Login
+Withdraw Customer → Agent
+Send Money (Customer → Customer)
+Payment (Customer → Merchant)
+Balance Check
+Transaction History
+Transaction Details
+🔐 Identified Security Issues
+🚨 Vulnerability Summary
+Issue	Severity
+Improper RBAC	🔴 Critical
+Token Misuse Across Roles	🔴 Critical
+Secret Key Validation Weakness	🟠 High
+1️⃣ Improper Role-Based Access Control
+Customer token can:
 
-Bug 2: Token Misuse Across Roles
-Endpoints requiring admin_token still work when customer_token is used.
+Create Virtual Money ❌ (Should be Admin only)
+Create Commission ❌
+Perform Admin-level operations ❌
+✅ Expected: Access Denied
+❌ Actual: Access Allowed
 
-Endpoint	Required Token	Token Used	Result
-Deposit System → Agent	admin_token	customer_token	Works
-The backend validates only token existence, not role permissions.
+2️⃣ Token Misuse Across Roles
+Endpoint	Expected Token	Actual Working Token
+Deposit System → Agent	admin_token	customer_token
+Backend validates token existence — not role permission.
 
-Bug 3: Secret Key Validation Weakness
-Credentials Used	Expected	Actual
-customer_token + AUTH_SECRET_KEY + AUTH-SECRET-KEY-SYSTEM	Denied	Allowed
-This indicates missing server-side authorization enforcement and weak privilege separation.
+3️⃣ Secret Key Validation Weakness
+Combining:
 
-Security Impact
-Risk	Severity
-Privilege Escalation	Critical
-Unauthorized Fund Creation	Critical
-Commission Manipulation	High
-Financial System Abuse	Critical
-System Integrity Compromise	Critical
-Recommendations
-#	Recommendation
-1	Implement strict Role-Based Access Control (RBAC)
-2	Enforce role validation at middleware level
-3	Validate token-role mapping on every protected endpoint
-4	Separate Admin and System privileges clearly
-5	Prevent cross-role token misuse
-What This Project Demonstrates
-Area	Details
-API Automation	End-to-end workflow with advanced Postman scripting
-Multi-Role Testing	Admin, Agent, Customer, Merchant workflows
-Dynamic Variables	Auto-generated tokens, IDs, balances
-Transaction Lifecycle	Deposits, withdrawals, transfers, payments
-Security Testing	RBAC vulnerabilities and privilege escalation analysis
-How to Run
-Step	Action
-1	Clone this repository
-2	Import the Collection and Environment files into Postman
-3	Select the imported environment
-4	Run using Collection Runner
-5	All requests execute automatically in sequence
-Author
-Field	Information
-Name	Mahmuda Ferdus
-GitHub	https://github.com/MahmudaFerdus
-Purpose	API automation practice and security testing
+customer_token
+AUTH_SECRET_KEY
+AUTH-SECRET-KEY-SYSTEM
+Allows privileged operations.
 
+This indicates missing server-side authorization enforcement.
+
+⚠️ Security Impact
+Privilege Escalation
+Unauthorized Fund Creation
+Commission Manipulation
+Financial System Abuse
+Compromised System Integrity
+✅ Recommendations
+Implement strict Role-Based Access Control (RBAC)
+Validate role in middleware for every protected endpoint
+Enforce token-role mapping validation
+Separate Admin and System privileges
+Prevent cross-role token usage
+🎯 What This Project Demonstrates
+End-to-End API Automation
+Advanced Postman Scripting
+Multi-Role Financial Workflow Testing
+Dynamic Environment Variable Handling
+Security & Authorization Testing
+🚀 How to Run
+Clone repository
+Import Collection & Environment into Postman
+Select Environment
+Run via Collection Runner
+All requests execute automatically
+👩‍💻 Author
+Mahmuda Ferdus
+GitHub: https://github.com/MahmudaFerdus
+
+Purpose: API automation practice and security-focused testing.

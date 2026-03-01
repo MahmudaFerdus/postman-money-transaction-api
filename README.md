@@ -1,182 +1,115 @@
 # 💰 Money Transaction API  
-### Automated Postman Collection with Security Analysis
+### Fully Automated Postman Collection + Critical Security Audit
 
-This repository contains a fully automated **Postman Collection & Environment** for testing a **Money Transaction System API**.
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
+![Automated](https://img.shields.io/badge/Automation-100%25_Sequential-brightgreen?style=flat-square)
+![Security](https://img.shields.io/badge/Security-Critical_Vulnerabilities-red?style=flat-square)
 
-It simulates a complete financial ecosystem with multiple roles and executes end‑to‑end workflows automatically.
-
-In addition to functional testing, this project identifies **critical authorization vulnerabilities**.
-
----
-
-## 📄 API Documentation
-
-| Resource | Link |
-|----------|------|
-| Postman Documentation | https://documenter.getpostman.com/view/22815578/2sBXcAH2jZ |
+**One-click end-to-end testing** of a complete digital wallet system with real privilege escalation exploits discovered live.
 
 ---
 
-# 👥 Roles Covered
-
-| Role      | Key Capabilities |
-|-----------|-----------------|
-| 👑 **Admin**    | Manage users, Create virtual money, Manage commissions, System deposits |
-| 🏪 **Agent**    | Deposit money to customers |
-| 👤 **Customer** | Withdraw, Transfer, Pay merchants, Check balance |
-| 🛍️ **Merchant** | Receive customer payments |
+### 📄 Live API Documentation  
+🔗 [View Full Interactive Docs](https://documenter.getpostman.com/view/22815578/2sBXcAH2jZ)
 
 ---
 
-# ⚙️ Base Configuration
+### 👥 Roles & Capabilities (Fully Simulated)
 
-| Configuration | Value |
-|--------------|-------|
-| Base URL | https://mta.newroztech.com/api |
-| AUTH_SECRET_KEY | e97b4ca15fd2b3086c1e4af98b72d503 |
-| AUTH-SECRET-KEY-SYSTEM | b82439df1c92a7fe504bf23da918e6f1 |
-
-✅ Configured inside Postman Environment
-
----
-
-# 🌍 Environment Variables
-
-## ✅ Manually Configured
-
-| Variable Name |
-|--------------|
-| base_url |
-| auth_secret_key |
-| secret_key_system |
+| Role       | Icon | Key Capabilities                                                                 |
+|------------|------|-----------------------------------------------------------------------------------|
+| Admin      | 🛡️   | Create users, generate virtual money, set commissions, system deposits           |
+| Agent      | 💼   | Deposit money from system/agent → customer                                        |
+| Customer   | 👤   | Withdraw, P2P transfer, pay merchants, check balance & history                    |
+| Merchant   | 🏪   | Receive payments from customers                                                   |
 
 ---
 
-## ✅ Automatically Generated (via Test Scripts)
+### ⚙️ Base Configuration (Pre-filled in Environment)
 
-### Example Script
+| Variable                  | Value                                      |
+|---------------------------|--------------------------------------------|
+| `base_url`                | `https://mta.newroztech.com/api`           |
+| `auth_secret_key`         | `e97b4ca15fd2b3086c1e4af98b72d503`          |
+| `secret_key_system`       | `b82439df1c92a7fe504bf23da918e6f1`          |
 
-```javascript
-pm.environment.set("admin_token", pm.response.json().token);
+---
 
-### 🔄 Auto-Captured Values (Generated Automatically)
+### 🌍 Environment Variables (Smart & Automatic)
 
-| Tokens                | IDs                | Others               |
-|-----------------------|--------------------|----------------------|
-| `admin_token`         | `customer_id`      | `balances`           |
-| `agent_token`         | `agent_id`         | `transaction_id`     |
-| `customer_token`      | `merchant_id`      | `withdraw_fee`       |
-| `merchant_token`      |                    |                      |
+| Type                  | Variables Automatically Captured                                                                 |
+|-----------------------|--------------------------------------------------------------------------------------------------|
+| Manually Set          | `base_url`, `auth_secret_key`, `secret_key_system`                                              |
+| Auto-Generated (Scripts) | `admin_token` · `agent_token` · `customer_token` · `merchant_token` <br> `customer_id` · `agent_id` · `merchant_id` <br> `balances` · `transaction_id` · `withdraw_fee` |
 
-### 🤖 Automation Features
+**Zero manual token copying** – Everything flows automatically via `pm.environment.set()` & `postman.setNextRequest()`
 
-| Feature                              | Status |
-|--------------------------------------|--------|
-| No manual token copying              | ✅     |
-| Fully sequential execution           | ✅     |
-| Dynamic data reuse across requests   | ✅     |
+---
 
-### 🔄 Automated Execution Flow  
-All requests run in perfect order using `postman.setNextRequest()`
+### 🔄 Full Automated Flow (Runs Sequentially)
 
-#### 👑 Admin Workflow
-| Step                          |
-|-------------------------------|
-| Admin Login                   |
-| Create Customer               |
-| Create Agent                  |
-| Create Merchant               |
-| User Search & Listing         |
-| Create Virtual Money          |
-| Commission Setup              |
-| Deposit System → Agent        |
+| Step | Workflow                                                                                  |
+|------|-------------------------------------------------------------------------------------------|
+| 1    | Admin Login → Create Customer/Agent/Merchant → Create Virtual Money → Set Commission     |
+| 2    | System Deposit → Agent → Agent Deposit → Customer                                        |
+| 3    | Customer Login → Withdraw → Send Money (P2P) → Pay Merchant → Balance & History Checks   |
 
-#### 💼 Agent Workflow
-| Step                          |
-|-------------------------------|
-| Agent Login                   |
-| Deposit Agent → Customer      |
+All executed in perfect order using Collection Runner.
 
-#### 👤 Customer Workflow
-| Step                                      |
-|-------------------------------------------|
-| Deposit System → Customer                 |
-| Customer Login                            |
-| Withdraw Customer → Agent                 |
-| Send Money (Customer → Customer)          |
-| Payment (Customer → Merchant)             |
-| Balance Check                             |
-| Transaction History                       |
-| Transaction Details                       |
+---
 
-### 🔐 Identified Security Issues
+### 🔐 Critical Security Vulnerabilities Discovered
 
-#### 🚨 Vulnerability Summary
-| Issue                            | Severity       |
-|----------------------------------|----------------|
-| Improper RBAC                    | 🔴 Critical    |
-| Token Misuse Across Roles        | 🔴 Critical    |
-| Secret Key Validation Weakness   | 🟠 High        |
+| # | Vulnerability                        | Severity       | Status     | Details                                                                 |
+|---|--------------------------------------|----------------|------------|-------------------------------------------------------------------------|
+| 1 | Improper RBAC                        | 🔴 Critical    | Exploitable | Customer token can create virtual money & set commissions               |
+| 2 | Cross-Role Token Misuse              | 🔴 Critical    | Exploitable | `customer_token` works on Admin/System endpoints                        |
+| 3 | Weak Secret Key Validation           | 🟠 High        | Exploitable | Combining user token + global secrets = full privilege escalation      |
 
-#### 1️⃣ Improper Role-Based Access Control
-| Test Scenario                          | Expected       | Actual          |
-|----------------------------------------|----------------|-----------------|
-| Customer creates Virtual Money         | ❌ Access Denied | ✅ Access Allowed |
-| Customer creates Commission            | ❌ Access Denied | ✅ Access Allowed |
-| Customer performs Admin operations     | ❌ Access Denied | ✅ Access Allowed |
+**Real Impact:** Unlimited money creation, commission manipulation, total system takeover.
 
-#### 2️⃣ Token Misuse Across Roles
-| Endpoint                  | Expected Token | Actual Working Token |
-|---------------------------|----------------|----------------------|
-| Deposit System → Agent    | `admin_token`  | `customer_token`     |
+---
 
-> **Backend only checks if token exists — not who it belongs to.**
+### 🛡️ Immediate Security Recommendations
 
-#### 3️⃣ Secret Key Validation Weakness
-| Components Used                          | Result                     |
-|------------------------------------------|----------------------------|
-| `customer_token` + `AUTH_SECRET_KEY` + `AUTH-SECRET-KEY-SYSTEM` | Full privileged access |
+| Action                                           | Priority |
+|--------------------------------------------------|----------|
+| Enforce strict RBAC in middleware                | Critical |
+| Validate token role matches endpoint requirement | Critical |
+| Block cross-role token usage                     | Critical |
+| Separate Admin/System secret keys completely     | High     |
 
-**Server-side role/permission enforcement completely missing.**
+---
 
-### ⚠️ Security Impact
-| Impact Area                     |
-|---------------------------------|
-| Privilege Escalation            |
-| Unauthorized Fund Creation      |
-| Commission Manipulation         |
-| Financial System Abuse          |
-| Compromised System Integrity    |
+### 🎯 What This Project Proves
 
-### ✅ Recommendations
-| Recommendation                                      |
-|----------------------------------------------------|
-| Implement strict Role-Based Access Control (RBAC)  |
-| Validate role in middleware for every endpoint    |
-| Enforce token-role mapping validation              |
-| Separate Admin and System privileges completely    |
-| Prevent cross-role token usage                     |
+| Skill Demonstrated                              |
+|-------------------------------------------------|
+| End-to-end API automation                       |
+| Advanced Postman scripting & dynamic variables  |
+| Multi-role financial workflow simulation        |
+| Real-world authorization bypass testing         |
+| Automated security vulnerability discovery      |
 
-### 🎯 What This Project Demonstrates
-| Capability                                    |
-|-----------------------------------------------|
-| End-to-End API Automation                     |
-| Advanced Postman Scripting                    |
-| Multi-Role Financial Workflow Testing         |
-| Dynamic Environment Variable Handling         |
-| Real-World Security & Authorization Testing   |
+---
 
-### 🚀 How to Run
-| Step | Action                                      |
-|------|---------------------------------------------|
-| 1    | Clone repository                            |
-| 2    | Import Collection & Environment into Postman|
-| 3    | Select the Environment (top-right)          |
-| 4    | Run via **Collection Runner**               |
-| ✅   | Everything executes automatically           |
+### 🚀 How to Run (Takes 30 seconds)
+
+| Step | Action                                               |
+|------|------------------------------------------------------|
+| 1    | Clone this repo                                      |
+| 2    | Import **Collection** + **Environment** into Postman |
+| 3    | Select the environment (top-right)                   |
+| 4    | Click **Run** in Collection Runner → Watch magic     |
+
+Everything runs automatically. No manual steps.
+
+---
 
 ### 👩‍💻 Author
-| Name             | Profile                                          |
-|------------------|--------------------------------------------------|
-| Mahmuda Ferdus   | [github.com/MahmudaFerdus](https://github.com/MahmudaFerdus) |
 
+**Mahmuda Ferdus**  
+Security-Minded QA Automation Engineer  
+[![GitHub](https://img.shields.io/badge/GitHub-MahmudaFerdus-black?style=flat-square&logo=github)](https://github.com/MahmudaFerdus)
+
+> **Purpose:** Advanced automation practice + real security research  

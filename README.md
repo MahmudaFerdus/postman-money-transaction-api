@@ -1,92 +1,60 @@
 Money Transaction API – Automated Postman Collection (With Security Analysis)
-This repository contains a fully automated Postman Collection and Environment file for testing the Money Transaction System API.
+This repository contains a fully automated Postman Collection and Environment file for testing the Money Transaction System API. It simulates a complete financial ecosystem with multiple user roles and performs end-to-end transaction workflows without manual intervention.
 
-The collection simulates a complete financial ecosystem involving multiple user roles and performs end-to-end transaction workflows automatically.
+Beyond functional testing, this project also identifies critical security vulnerabilities in authorization and access control.
 
 Roles Covered
-Admin
-Agent
-Customer
-Merchant
-All requests are executed sequentially using:
-
-JavaScript
-
-postman.setNextRequest()
-This ensures a proper business flow from user creation to transaction history without manual intervention.
-
+Role	Responsibilities
+Admin	User management, virtual money creation, commissions, system deposits
+Agent	Deposits to customers
+Customer	Withdrawals, transfers, payments
+Merchant	Receives payments from customers
 Base Configuration
-Base URL
-text
-
-https://mta.newroztech.com/api
-Authentication Keys
-text
-
-AUTH_SECRET_KEY: e97b4ca15fd2b3086c1e4af98b72d503
-AUTH-SECRET-KEY-SYSTEM: b82439df1c92a7fe504bf23da918e6f1
-These values are configured inside the Postman Environment.
+Parameter	Value
+Base URL	https://mta.newroztech.com/api
+AUTH_SECRET_KEY	e97b4ca15fd2b3086c1e4af98b72d503
+AUTH-SECRET-KEY-SYSTEM	b82439df1c92a7fe504bf23da918e6f1
+These values are pre-configured in the Postman Environment file.
 
 Environment Variables
-Manually Configured Variables
-Variable Name	Value
+Manually Configured:
+
+Variable	Value
 base_url	https://mta.newroztech.com/api
 auth_secret_key	e97b4ca15fd2b3086c1e4af98b72d503
 secret_key_system	b82439df1c92a7fe504bf23da918e6f1
-Automatically Set via Postman Test Scripts
-All tokens, IDs, balances, and other dynamic values are captured from API responses and stored automatically using Postman scripts.
+Auto-Generated via Postman Scripts:
 
-Example:
+All tokens, IDs, balances, and dynamic values are captured from API responses automatically:
 
 JavaScript
 
 pm.environment.set("admin_token", pm.response.json().token);
-Auto-generated Variables Include:
-admin_token
-agent_token
-customer_token
-merchant_token
-customer_id
-agent_id
-merchant_id
-customer_balance
-agent_balance
-withdraw_fee
-transaction_id
-and other transaction-related values
-✔ No manual token copying
-✔ Fully automated execution
-✔ Dynamic data reuse across requests
+Includes: admin_token, agent_token, customer_token, merchant_token, customer_id, agent_id, merchant_id, customer_balance, agent_balance, withdraw_fee, transaction_id, and more.
+
+✅ No manual token copying · ✅ Fully automated · ✅ Dynamic data reuse across requests
 
 Automated Execution Flow
-The collection runs in the following strict sequence:
+All requests run sequentially using postman.setNextRequest(). No manual reordering needed.
 
-Admin Operations
-Admin Login
-Create Customer
-Create Agent
-Create Merchant
-User List
-Search User by Email
-Search User by ID
-Create Virtual Money (From SYSTEM)
-System Virtual Balance
-Commission Create
-Commission Listing
-Deposit System → Agent
-Agent Operations
-Agent Login
-Deposit Agent → Customer
-Customer Operations
-Deposit System → Customer
-Customer Login
-Withdraw Customer → Agent
-Send Money (Customer → Customer)
-Payment (Customer → Merchant)
-Balance Check
-Transaction History
-Transaction Details
-The request order is controlled programmatically. Manual reordering is not required.
+text
+
+ADMIN OPERATIONS                 AGENT OPERATIONS         CUSTOMER OPERATIONS
+─────────────────                ────────────────         ────────────────────
+1.  Admin Login                  13. Agent Login          15. Deposit Sys → Customer
+2.  Create Customer              14. Deposit Agent        16. Customer Login
+3.  Create Agent                     → Customer           17. Withdraw Cust → Agent
+4.  Create Merchant                                       18. Send Money (C → C)
+5.  User List                            │                19. Payment (C → Merchant)
+6.  Search by Email                      │                20. Balance Check
+7.  Search by ID                         │                21. Transaction History
+8.  Create Virtual Money                 │                22. Transaction Details
+9.  System Virtual Balance               │
+10. Commission Create                    │
+11. Commission Listing                   ▼
+12. Deposit Sys → Agent ──────────►  FLOW END
+
+
 
 Identified Security Issues (Authorization Bugs)
 During testing, several authorization weaknesses were identified.
@@ -158,4 +126,5 @@ GitHub: https://github.com/MahmudaFerdus
 Project Purpose
 This project was built for:
 
-API automation practice
+API practice/API automation practice
+    

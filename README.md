@@ -73,23 +73,27 @@ All executed in perfect order using Collection Runner.
 🔐 Critical Security Vulnerabilities Discovered
 
 
-#	Vulnerability	Severity	Status	What It Means (Plain English)
-1	Improper Role-Based Access Control (RBAC)	🔴 Critical	Exploitable	The system is supposed to say: "Only Admin can create money!"<br>But in reality, a normal Customer can use their own token and create unlimited virtual money. This is like giving a regular shopper the bank manager's key.
-2	Cross-Role Token Misuse	🔴 Critical	Exploitable	Some endpoints are meant to work only with admin_token or system token.<br>But they also accept customer_token!<br>Example: The "Deposit System → Agent" endpoint should reject customer token → it accepts it and works perfectly.<br>Result: A customer can act like an Admin without anyone noticing.
-3	Weak Secret Key Validation	🟠 High	Exploitable	The API has two secret keys that are supposed to be super secret (AUTH_SECRET_KEY & AUTH-SECRET-KEY-SYSTEM).<br>If a customer simply copies their own token + these two secrets into the request, they instantly get full Admin + System privileges.<br>No password, no verification — just paste and gain god mode.
-Real-World Impact (What an attacker can actually do)
-Attack Scenario	Possible?	Result
-Create unlimited virtual money	Yes	Can make themselves billionaire in seconds
-Change commission rates to 0% or 99%	Yes	Steal all transaction fees or make everything free for themselves
-Deposit money into any account	Yes	Can fund any customer/agent/merchant without permission
-Bypass all payment limits	Yes	Transfer millions without any restriction
-Take over the entire financial system	Yes	Full control — the bank basically belongs to the attacker now
-Bottom line:
-This is not a small bug.
-This is a complete authorization breakdown.
-Any registered customer can become the owner of the entire system in less than 2 minutes using just this Postman collection.
+#	Vulnerability	Severity	Status	What Actually Happens (Plain English)
+1	Zero RBAC Enforcement	🔴 Critical	Exploitable	🚨 A normal Customer can print unlimited money<br>Yes, you read that right. They just send one request with their customer_token → the server happily creates billions for them.<br>Same as giving every customer the central bank's printing machine — on steroids.
+2	Cross-Role Token Misuse	🔴 Critical	Exploitable	🚨 Customer token = Admin token<br>Endpoints that scream "Admin only!" in the docs actually accept customer_token without complaining.<br>Real example: "Deposit System → Agent" works perfectly with customer token → Customer can silently fund any account like a god — forever.
+3	Secret Key Validation Completely Broken	🟠 High	Exploitable	🚨 Just paste 3 lines and become God<br>Take your customer_token + the two "super secret" keys from the environment → send → Instant full Admin + System access.<br>No 2FA. No questions. No logs. Just god mode unlocked in 1 click.
+🔥 Real-World Attack Scenarios (What an attacker can do in < 2 minutes)
 
-That’s why all three issues are rated Critical/High — they allow total compromise of the money transaction platform.
+Attack Scenario	Possible?	Outcome
+Become a billionaire	YES	Create unlimited virtual money → withdraw or transfer anywhere
+Set commission to 0% or 100%	YES	Steal every single transaction fee in the system
+Fund any user without permission	YES	Deposit billions into friends/hackers accounts silently
+Bypass all limits & KYC	YES	Transfer $1B+ in one click → no alerts
+Complete system takeover	YES	The entire bank now belongs to any registered customer
+Bottom Line (in big bold letters):
+
+This is not a bug.
+This is a bank with the vault door wide open and the keys taped to the front desk.
+
+Any customer who runs this Postman collection instantly becomes the owner of the entire financial platform.
+
+That’s why these are rated Critical → Critical → High
+→ 100% Remote, No Authentication Required Beyond Signup, Total Compromise.
 
 ---
 

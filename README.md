@@ -77,7 +77,7 @@ All executed in perfect order using Collection Runner.
 | :--- | :--- | :--- |
 | **1** | **Zero RBAC Enforcement** | **A normal Customer can print unlimited money.**<br>Yes, you read that right. They just send one request with their `customer_token` → the server happily creates billions for them.<br>_Same as giving every customer the central bank's printing machine._ |
 | **2** | **Cross-Role Token Misuse** | **Customer token = Admin token.**<br>Endpoints that scream "Admin only!" in the docs actually accept `customer_token` without complaining.<br>_Real example:_ "Deposit System → Agent" works perfectly with customer token → Customer can silently fund any account like a god. |
-| **3** | **Secret Key Validation Broken** | **Just paste 3 lines and become God.**<br>Take your `customer_token` + the two "super secret" keys from the environment → send → Instant full Admin + System access.<br>_No 2FA. No questions. No logs. God mode unlocked in 1 click._ |
+| **3** | **Secret Key Validation Broken** | **Just paste 3 lines and get unlimited access. **<br>Take your `customer_token` + the two "super secret" keys from the environment → send → Instant full Admin + System access.<br>_No 2FA. No questions. No logs. All access mode unlocked in 1 click._ |
 
 ---
 

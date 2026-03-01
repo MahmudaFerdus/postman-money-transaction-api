@@ -58,3 +58,102 @@ In addition to functional testing, this project identifies **critical authorizat
 
 ```javascript
 pm.environment.set("admin_token", pm.response.json().token);
+
+🔄 Auto-Captured Values
+Tokens	IDs	Others
+admin_token	customer_id	balances
+agent_token	agent_id	transaction_id
+customer_token	merchant_id	withdraw_fee
+merchant_token		
+🤖 Automation Features
+Feature	Status
+No manual token copying	✅
+Fully sequential execution	✅
+Dynamic data reuse across requests	✅
+🔄 Automated Execution Flow
+All requests run sequentially using:
+
+text
+
+postman.setNextRequest()
+👑 Admin Workflow
+Step
+Admin Login
+Create Customer
+Create Agent
+Create Merchant
+User Search & Listing
+Create Virtual Money
+Commission Setup
+Deposit System → Agent
+🏪 Agent Workflow
+Step
+Agent Login
+Deposit Agent → Customer
+👤 Customer Workflow
+Step
+Deposit System → Customer
+Customer Login
+Withdraw Customer → Agent
+Send Money (Customer → Customer)
+Payment (Customer → Merchant)
+Balance Check
+Transaction History
+Transaction Details
+🔐 Identified Security Issues
+🚨 Vulnerability Summary
+Issue	Severity
+Improper RBAC	🔴 Critical
+Token Misuse Across Roles	🔴 Critical
+Secret Key Validation Weakness	🟠 High
+1️⃣ Improper Role-Based Access Control
+Test Scenario	Expected	Actual
+Customer creates Virtual Money	❌ Access Denied	✅ Access Allowed
+Customer creates Commission	❌ Access Denied	✅ Access Allowed
+Customer performs Admin operations	❌ Access Denied	✅ Access Allowed
+2️⃣ Token Misuse Across Roles
+Endpoint	Expected Token	Actual Working Token
+Deposit System → Agent	admin_token	customer_token
+⚠ Backend validates token existence — not role permission.
+
+3️⃣ Secret Key Validation Weakness
+Combining the following allows privileged operations:
+
+Components Used
+customer_token
+AUTH_SECRET_KEY
+AUTH-SECRET-KEY-SYSTEM
+Indicates missing server-side authorization enforcement.
+
+⚠️ Security Impact
+Impact Area
+Privilege Escalation
+Unauthorized Fund Creation
+Commission Manipulation
+Financial System Abuse
+Compromised System Integrity
+✅ Recommendations
+Recommendation
+Implement strict Role-Based Access Control (RBAC)
+Validate role in middleware for every protected endpoint
+Enforce token-role mapping validation
+Separate Admin and System privileges
+Prevent cross-role token usage
+🎯 What This Project Demonstrates
+Capability
+End-to-End API Automation
+Advanced Postman Scripting
+Multi-Role Financial Workflow Testing
+Dynamic Environment Variable Handling
+Security & Authorization Testing
+🚀 How to Run
+Step	Action
+1	Clone repository
+2	Import Collection & Environment into Postman
+3	Select Environment
+4	Run via Collection Runner
+✅	All requests execute automatically
+👩‍💻 Author
+Name	Profile
+Mahmuda Ferdus	https://github.com/MahmudaFerdus
+

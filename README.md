@@ -15,21 +15,21 @@ JavaScript
 postman.setNextRequest()
 ensuring a complete end‑to‑end financial workflow.
 
-🌐 Base Configuration
-🔗 Base URL : https://mta.newroztech.com/api
-🔐 Authentication Keys
+ Base Configuration
+ Base URL : https://mta.newroztech.com/api
+ Authentication Keys
 
 AUTH_SECRET_KEY: e97b4ca15fd2b3086c1e4af98b72d503
 AUTH-SECRET-KEY-SYSTEM: b82439df1c92a7fe504bf23da918e6f1
 These are configured inside the Postman Environment.
 
-⚙️ Environment Variables
-✅ Manually Configured
+Environment Variables
+Manually Configured
 Variable	Value
 base_url	https://mta.newroztech.com/api
 auth_secret_key	e97b4ca15fd2b3086c1e4af98b72d503
 secret_key_system	b82439df1c92a7fe504bf23da918e6f1
-✅ Automatically Set via Postman Scripts
+Automatically Set via Postman Scripts
 All tokens, IDs, and dynamic data are automatically stored from API responses using Postman test scripts:
 
 Example:
@@ -37,7 +37,7 @@ Example:
 JavaScript
 pm.environment.set("admin_token", pm.response.json().token);
 
-🔄 Auto-generated Variables
+Auto-generated Variables
 admin_token
 agent_token
 customer_token
@@ -50,14 +50,14 @@ agent_balance
 withdraw_fee
 transaction_id
 and many more...
-✅ No manual token copying
-✅ Fully automated execution
-✅ Dynamic data chaining across requests
+* No manual token copying
+* Fully automated execution
+*Dynamic data chaining across requests
 
-🔄 Automated Execution Flow
+Automated Execution Flow
 The collection runs in the following strict order:
 
-🛠 Admin Operations
+** Admin Operations
 Admin Login
 Create Customer
 Create Agent
@@ -70,10 +70,12 @@ System Virtual Balance
 Commission Create
 Commission Listing
 Deposit System → Agent
-🏦 Agent Operations
+
+**Agent Operations
 Agent Login
 Deposit Agent → Customer
-👤 Customer Operations
+
+** Customer Operations
 Deposit System → Customer
 Customer Login
 Withdraw Customer → Agent
@@ -82,22 +84,23 @@ Payment (Customer → Merchant)
 Balance Check
 Transaction History
 Transaction Details
-🐞 Identified Security Issues (Authorization Bugs)
+
+Identified Security Issues (Authorization Bugs)
 During testing, several critical authorization vulnerabilities were discovered.
 
-❗ 1. Improper Role-Based Access Control (RBAC)
+1. Improper Role-Based Access Control (RBAC)
 The API does not properly validate user roles against their permissions.
 
-🔎 Example Findings:
-✅ If logged in as a Customer,
-and the customer_token is used in the Authorization header:
+ Example Findings:
+ If logged in as a Customer,
+ and the customer_token is used in the Authorization header:
 
 Customer can create Virtual Money
 Customer can create Commission
 Customer can perform Admin-level operations
-⚠️ These actions should only be allowed for Admin role.
+These actions should only be allowed for Admin role.
 
-❗ 2. Token Misuse Across Roles
+2. Token Misuse Across Roles
 Even when using:
 
 text
@@ -110,7 +113,7 @@ text
 Authorization: Bearer {{admin_token}}
 the API still allows execution.
 
-🔎 Example:
+ Example:
 Deposit System → Agent
 Expected: Admin Token Required
 Actual: Works with Customer Token
@@ -119,7 +122,7 @@ This indicates:
 No strict role validation
 Missing permission checks
 Backend only validating token existence, not role authority
-❗ 3. Secret Key Validation Weakness
+3. Secret Key Validation Weakness
 When combining:
 
 customer_token
@@ -131,7 +134,7 @@ This suggests:
 
 Improper privilege separation
 Missing server-side authorization enforcement
-🚨 Security Impact
+Security Impact
 These issues may lead to:
 
 Privilege Escalation
@@ -139,7 +142,7 @@ Unauthorized Fund Creation
 Unauthorized Commission Manipulation
 Financial Fraud Risk
 System Integrity Compromise
-✅ Recommendation (As QA Observation)
+Recommendation (As QA Observation)
 To fix these issues, the API should implement:
 
 Strict Role-Based Access Control (RBAC)
@@ -147,14 +150,14 @@ Server-side role verification per endpoint
 Proper token-role mapping validation
 Middleware-level permission enforcement
 Separation of Admin/System privileges
-🧪 What This Project Demonstrates
-✅ End-to-End API Automation
-✅ Advanced Postman Scripting
-✅ Multi-Role Workflow Testing
-✅ Dynamic Environment Handling
-✅ Financial Transaction Simulation
-✅ Security Vulnerability Identification
-✅ Authorization & Access Control Testing
+ What This Project Demonstrates
+ End-to-End API Automation
+ Advanced Postman Scripting
+ Multi-Role Workflow Testing
+ Dynamic Environment Handling
+ Financial Transaction Simulation
+ Security Vulnerability Identification
+ Authorization & Access Control Testing
 This project not only demonstrates automation skills but also security-focused API testing capability.
 
 📖 API Documentation

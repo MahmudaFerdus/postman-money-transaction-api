@@ -29,9 +29,9 @@
 
 | Variable                  | Value                                      |
 |---------------------------|--------------------------------------------|
-| `base_url`                | `https://mta.newroztech.com/api`           |
-| `auth_secret_key`         | `e97b4ca15fd2b3086c1e4af98b72d503`          |
-| `secret_key_system`       | `b82439df1c92a7fe504bf23da918e6f1`          |
+| `base_url`                | `your actual url`           |
+| `auth_secret_key`         | `your actual auth secret key`          |
+| `secret_key_system`       | `your actual secret key system`          |
 
 ---
 
